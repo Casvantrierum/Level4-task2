@@ -25,4 +25,5 @@
             android:id="@+id/action_HistoryFragment_to_PlayFragment"
             app:destination="@id/PlayFragment" />
     </fragment>
+
 </navigation>

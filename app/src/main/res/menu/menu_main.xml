@@ -5,5 +5,5 @@
     <item
         android:id="@+id/action_history"
         android:icon="@drawable/ic_history_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.level4_task2.R
 
 class MainActivity : AppCompatActivity() {
@@ -13,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         R.id.action_history -> {
             Log.i("OK", "MA CLKICKED HISTORY TOOLBAR BTN" )
             println("MA CLICKED MENU HISTORY ITEM")
+            //findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
             true
         }
         else -> {

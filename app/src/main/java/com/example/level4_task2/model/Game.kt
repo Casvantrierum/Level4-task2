@@ -12,6 +12,9 @@ data class Game (
     @ColumnInfo(name = "computer")
     var computer: String,
 
+    @ColumnInfo(name = "result")
+    var result: String,
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long? = null
