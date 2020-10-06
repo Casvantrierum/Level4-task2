@@ -6,18 +6,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.level4_task2.R
+import com.example.level4_task2.model.Game
+import com.example.level4_task2.repository.GameRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class PlayFragment : Fragment() {
 
+    private val possibilities = listOf("Rock", "Paper", "Scissors")
 
-    val posibilities = listOf("Rock", "Paper", "Scissors")
+    private lateinit var gameRepository: GameRepository
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +42,8 @@ class PlayFragment : Fragment() {
 //            findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
 //        }
 
+        gameRepository = GameRepository(requireContext())
+
         view.findViewById<ImageButton>(R.id.ibRock).setOnClickListener {
             play("Rock")
         }
@@ -49,17 +59,33 @@ class PlayFragment : Fragment() {
         val computerHand = generateRandom()
         val result : String
 
-        if(computerHand.equals(playerHand)) result = "draw"
-        else if(posibilities.indexOf(computerHand) -1 == posibilities.indexOf(playerHand)) result = "loss"
-        else if(posibilities.indexOf(computerHand) == 0 &&  posibilities.indexOf(playerHand) == 2) result = "loss"
+        if(computerHand == playerHand) result = "draw"
+        else if(possibilities.indexOf(computerHand) -1 == possibilities.indexOf(playerHand)) result = "loss"
+        else if(possibilities.indexOf(computerHand) == 0 &&  possibilities.indexOf(playerHand) == 2) result = "loss"
         else result = "win"
 
         Log.i(result , "$computerHand - $playerHand")
 
-        //addGame(playerHand, computerHand, result)
+        addGame(playerHand, computerHand, result)
+
+        findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
     }
 
     private fun generateRandom(): String{
-        return posibilities.random();
+        return possibilities.random();
+    }
+
+    private fun addGame(playerHand: String, computerHand: String, result: String) {
+        mainScope.launch {
+            val game = Game(
+                player = playerHand,
+                computer = computerHand,
+                result = result
+            )
+
+            withContext(Dispatchers.IO) {
+                gameRepository.insertGame(game)
+            }
+        }
     }
 }
