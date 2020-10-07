@@ -1,13 +1,11 @@
 package com.example.level4_task2.ui
 
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import com.example.level4_task2.R
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,22 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_history, menu)
         return true
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_history -> {
-            Log.i("OK", "MA CLKICKED HISTORY TOOLBAR BTN" )
-            println("MA CLICKED MENU HISTORY ITEM")
-            //findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
-            true
-        }
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
-        }
-    }
-
 }

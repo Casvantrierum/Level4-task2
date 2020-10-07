@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Level4-task2</string>
+    <string name="app_name">Level 4 - Task 2</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="play_fragment_label">Play Fragment</string>
@@ -17,5 +17,6 @@
     <string name="win">You won!</string>
     <string name="draw">Draw</string>
     <string name="loss">Computer won!</string>
+    <string name="your_history">Your game history</string>
 
 </resources>

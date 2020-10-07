@@ -2,10 +2,9 @@ package com.example.level4_task2.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
@@ -29,9 +29,33 @@ class HistoryFragment : Fragment() {
     private val history = arrayListOf<Game>()
     private val historyAdapter = HistoryAdapter(history)
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_history, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_delete -> {
+            removeAllGames()
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_history, container, false)
@@ -45,15 +69,14 @@ class HistoryFragment : Fragment() {
         getHistoryFromDatabase()
 
         initRv()
-
-//        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-//            findNavController().navigate(R.id.action_HistoryFragment_to_PlayFragment)
-//        }
     }
+
     override fun onStart() {
         Log.i("OK", "onstart history fragment")
         super.onStart()
         getHistoryFromDatabase()
+
+        getActivity()?.setTitle(getString(R.string.your_history));
     }
 
     private fun initRv() {
@@ -73,6 +96,17 @@ class HistoryFragment : Fragment() {
             this@HistoryFragment.history.addAll(shoppingList)
             this@HistoryFragment.history.reverse()
             this@HistoryFragment.historyAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun removeAllGames() {
+        gameRepository = GameRepository(requireContext())
+
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                gameRepository.deleteAllGames()
+            }
+            getHistoryFromDatabase()
         }
     }
 }

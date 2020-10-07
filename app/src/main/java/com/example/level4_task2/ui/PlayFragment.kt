@@ -2,15 +2,15 @@ package com.example.level4_task2.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.level4_task2.R
 import com.example.level4_task2.model.Game
 import com.example.level4_task2.repository.GameRepository
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,21 +26,39 @@ class PlayFragment : Fragment() {
     private lateinit var gameRepository: GameRepository
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_history -> {
+            Log.i("OK", "MA CLKICKED HISTORY TOOLBAR BTN")
+            NavHostFragment.findNavController(nav_host_fragment)
+                .navigate(R.id.action_PlayFragment_to_HistoryFragment)
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_play, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-//            findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
-//        }
 
         gameRepository = GameRepository(requireContext())
 
@@ -55,6 +73,11 @@ class PlayFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        getActivity()?.setTitle(getString(R.string.app_name));
+    }
+
     private fun play(playerHand: String){
         val computerHand = generateRandom()
         val result : String
@@ -67,8 +90,6 @@ class PlayFragment : Fragment() {
         Log.i(result , "$computerHand - $playerHand")
 
         addGame(playerHand, computerHand, result)
-
-        findNavController().navigate(R.id.action_PlayFragment_to_HistoryFragment)
     }
 
     private fun generateRandom(): String{
