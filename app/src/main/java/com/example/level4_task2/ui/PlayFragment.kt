@@ -45,13 +45,13 @@ class PlayFragment : Fragment() {
         gameRepository = GameRepository(requireContext())
 
         view.findViewById<ImageButton>(R.id.ibRock).setOnClickListener {
-            play("Rock")
+            play(possibilities[0])
         }
         view.findViewById<ImageButton>(R.id.ibPaper).setOnClickListener {
-            play("Paper")
+            play(possibilities[1])
         }
         view.findViewById<ImageButton>(R.id.ibScissors).setOnClickListener {
-            play("Scissors")
+            play(possibilities[2])
         }
     }
 

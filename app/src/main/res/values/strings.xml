@@ -11,4 +11,11 @@
     <string name="hello_second_fragment">Hello history fragment. Arg: %1$s</string>
     <string name="title">Welcome</string>
     <string name="sub_title">Introduction: select rock, paper or scissors to play</string>
+    <string name="vs">V.S.</string>
+    <string name="you">You</string>
+    <string name="computer">Computer</string>
+    <string name="win">You won!</string>
+    <string name="draw">Draw</string>
+    <string name="loss">Computer won!</string>
+
 </resources>
