@@ -11,6 +11,8 @@ import com.example.level4_task2.R
 import com.example.level4_task2.model.Game
 import com.example.level4_task2.repository.GameRepository
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.fragment_play.*
+import kotlinx.android.synthetic.main.item_game.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +22,8 @@ import kotlinx.coroutines.withContext
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class PlayFragment : Fragment() {
+
+    private lateinit var lastGame: Game
 
     private val possibilities = listOf("Rock", "Paper", "Scissors")
 
@@ -75,6 +79,7 @@ class PlayFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        getLastGame()
         getActivity()?.setTitle(getString(R.string.app_name));
     }
 
@@ -86,8 +91,6 @@ class PlayFragment : Fragment() {
         else if(possibilities.indexOf(computerHand) -1 == possibilities.indexOf(playerHand)) result = "loss"
         else if(possibilities.indexOf(computerHand) == 0 &&  possibilities.indexOf(playerHand) == 2) result = "loss"
         else result = "win"
-
-        Log.i(result , "$computerHand - $playerHand")
 
         addGame(playerHand, computerHand, result)
     }
@@ -107,6 +110,42 @@ class PlayFragment : Fragment() {
             withContext(Dispatchers.IO) {
                 gameRepository.insertGame(game)
             }
+
+            lastGame = game
+
+            setUI()
         }
+    }
+
+    private fun getLastGame(){
+        mainScope.launch {
+            val lastGame = withContext(Dispatchers.IO) {
+                gameRepository.getLatestGame()
+            }
+            if (lastGame.isNotEmpty()) {
+                this@PlayFragment.lastGame = lastGame.first()
+                setUI()
+            }
+        }
+    }
+
+    private fun setUI() {
+
+            when (lastGame.result){
+                "win" -> tvWinner.text = "You won!"
+                "draw" -> tvWinner.text = "Draw"
+                "loss" -> tvWinner.text ="Computer won!"
+            }
+            when (lastGame.player){
+                "Rock" -> ivPlayer.setImageResource(R.drawable.rock)
+                "Paper" -> ivPlayer.setImageResource(R.drawable.paper)
+                "Scissors" -> ivPlayer.setImageResource(R.drawable.scissors)
+            }
+            when (lastGame.computer){
+                "Rock" -> ivComputer.setImageResource(R.drawable.rock)
+                "Paper" -> ivComputer.setImageResource(R.drawable.paper)
+                "Scissors" -> ivComputer.setImageResource(R.drawable.scissors)
+            }
+
     }
 }

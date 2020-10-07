@@ -29,4 +29,8 @@ class GameRepository (context: Context) {
     suspend fun deleteAllGames() {
         gameDao.deleteAllGames()
     }
+
+    suspend fun getLatestGame(): List<Game> {
+        return gameDao.getLatestGame()
+    }
 }

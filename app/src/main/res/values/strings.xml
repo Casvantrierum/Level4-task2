@@ -18,5 +18,6 @@
     <string name="draw">Draw</string>
     <string name="loss">Computer won!</string>
     <string name="your_history">Your game history</string>
+    <string name="pick_a_hand">Choose your hand</string>
 
 </resources>
