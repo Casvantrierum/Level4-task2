@@ -63,19 +63,14 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         gameRepository = GameRepository(requireContext())
-
         getHistoryFromDatabase()
-
         initRv()
     }
 
     override fun onStart() {
-        Log.i("OK", "onstart history fragment")
         super.onStart()
         getHistoryFromDatabase()
-
         getActivity()?.setTitle(getString(R.string.your_history));
     }
 

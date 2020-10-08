@@ -32,6 +32,7 @@ class HistoryAdapter(private val history: List<Game>) : RecyclerView.Adapter<His
                 "Paper" -> itemView.ivComputer.setImageResource(R.drawable.paper)
                 "Scissors" -> itemView.ivComputer.setImageResource(R.drawable.scissors)
             }
+            itemView.tvDate.text = game.date.toString()
         }
     }
 

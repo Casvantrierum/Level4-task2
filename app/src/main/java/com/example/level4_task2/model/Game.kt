@@ -3,6 +3,7 @@ package com.example.level4_task2.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "gameTable")
 data class Game (
@@ -14,6 +15,9 @@ data class Game (
 
     @ColumnInfo(name = "result")
     var result: String,
+
+    @ColumnInfo(name = "date")
+    var date: Date,
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

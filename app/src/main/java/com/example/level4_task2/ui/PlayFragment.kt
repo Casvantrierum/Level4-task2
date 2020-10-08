@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -104,7 +105,8 @@ class PlayFragment : Fragment() {
             val game = Game(
                 player = playerHand,
                 computer = computerHand,
-                result = result
+                result = result,
+                date = Date(System.currentTimeMillis())
             )
 
             withContext(Dispatchers.IO) {
