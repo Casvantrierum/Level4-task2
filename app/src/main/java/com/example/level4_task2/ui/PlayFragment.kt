@@ -25,6 +25,7 @@ import java.util.*
 class PlayFragment : Fragment() {
 
     private lateinit var lastGame: Game
+    private lateinit var stats: List<Int>
 
     private val possibilities = listOf("Rock", "Paper", "Scissors")
 
@@ -38,7 +39,6 @@ class PlayFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_history -> {
-            Log.i("OK", "MA CLKICKED HISTORY TOOLBAR BTN")
             NavHostFragment.findNavController(nav_host_fragment)
                 .navigate(R.id.action_PlayFragment_to_HistoryFragment)
             true
@@ -81,6 +81,7 @@ class PlayFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         getLastGame()
+        getStats()
         getActivity()?.setTitle(getString(R.string.app_name));
     }
 
@@ -112,10 +113,19 @@ class PlayFragment : Fragment() {
             withContext(Dispatchers.IO) {
                 gameRepository.insertGame(game)
             }
-
             lastGame = game
 
             setUI()
+            getStats()
+        }
+    }
+
+    private fun getStats(){
+        mainScope.launch {
+            stats = withContext(Dispatchers.IO) {
+                gameRepository.getStats()
+            }
+            setStats()
         }
     }
 
@@ -131,22 +141,28 @@ class PlayFragment : Fragment() {
         }
     }
 
+    private fun setStats(){
+        tvStatsIntro.text = getString(R.string.stats_intro, stats.sum())
+
+        tvStats.text = getString(R.string.stats, stats.elementAt(0), stats.elementAt(1), stats.elementAt(2))
+    }
+
     private fun setUI() {
 
             when (lastGame.result){
-                "win" -> tvWinner.text = "You won!"
-                "draw" -> tvWinner.text = "Draw"
-                "loss" -> tvWinner.text ="Computer won!"
+                "win" -> tvWinner.text = getString(R.string.win)
+                "draw" -> tvWinner.text = getString(R.string.draw)
+                "loss" -> tvWinner.text = getString(R.string.loss)
             }
             when (lastGame.player){
-                "Rock" -> ivPlayer.setImageResource(R.drawable.rock)
-                "Paper" -> ivPlayer.setImageResource(R.drawable.paper)
-                "Scissors" -> ivPlayer.setImageResource(R.drawable.scissors)
+                possibilities[0] -> ivPlayer.setImageResource(R.drawable.rock)
+                possibilities[1] -> ivPlayer.setImageResource(R.drawable.paper)
+                possibilities[2] -> ivPlayer.setImageResource(R.drawable.scissors)
             }
             when (lastGame.computer){
-                "Rock" -> ivComputer.setImageResource(R.drawable.rock)
-                "Paper" -> ivComputer.setImageResource(R.drawable.paper)
-                "Scissors" -> ivComputer.setImageResource(R.drawable.scissors)
+                possibilities[0] -> ivComputer.setImageResource(R.drawable.rock)
+                possibilities[1] -> ivComputer.setImageResource(R.drawable.paper)
+                possibilities[2] -> ivComputer.setImageResource(R.drawable.scissors)
             }
 
     }

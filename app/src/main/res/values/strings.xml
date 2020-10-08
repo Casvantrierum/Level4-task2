@@ -19,5 +19,8 @@
     <string name="loss">Computer won!</string>
     <string name="your_history">Your game history</string>
     <string name="pick_a_hand">Choose your hand</string>
+    <string name="stats_intro">Your all time stats: (total of %d games)</string>
+    <string name="stats">Wins: %d  | Draws: %d  |  Losses: %d</string>
+
 
 </resources>

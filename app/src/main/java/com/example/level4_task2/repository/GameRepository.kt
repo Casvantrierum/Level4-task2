@@ -1,11 +1,14 @@
 package com.example.level4_task2.repository
 
 import android.content.Context
-import com.example.level4_task2.model.Game
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.level4_task2.dao.GameDao
 import com.example.level4_task2.database.GameListRoomDatabase
+import com.example.level4_task2.model.Game
 
-class GameRepository (context: Context) {
+
+class GameRepository(context: Context) {
 
     private val gameDao: GameDao
 
@@ -32,5 +35,11 @@ class GameRepository (context: Context) {
 
     suspend fun getLatestGame(): List<Game> {
         return gameDao.getLatestGame()
+    }
+
+    suspend fun getStats(): List<Int> {
+        return listOf(
+            gameDao.getStatsWin(), gameDao.getStatsDraw() , gameDao.getStatsLoss()
+        )
     }
 }

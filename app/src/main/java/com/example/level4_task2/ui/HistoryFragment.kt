@@ -1,9 +1,7 @@
 package com.example.level4_task2.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +26,6 @@ class HistoryFragment : Fragment() {
 
     private val history = arrayListOf<Game>()
     private val historyAdapter = HistoryAdapter(history)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
